@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-"""
-Send one or more files as documents via Telegram Bot API.
+"""Send one or more files as documents via Telegram Bot API.
 
 Usage:
     python3 send_documents.py FILE1 [FILE2 ...]
     python3 send_documents.py --chat-id 12345 FILE1 FILE2
 
-Reads TELEGRAM_BOT_TOKEN from /home/usr/.hermes/.env or TELEGRAM_BOT_TOKEN env var.
-Default chat_id: 253742472 (Александр Соловьёв DM).
-
-Each file is sent as a separate sendDocument request via multipart/form-data.
+Reads TELEGRAM_BOT_TOKEN and TELEGRAM_HOME_CHANNEL from ~/.hermes/.env.
+No hardcoded IDs - everything comes from env config.
 """
 import urllib.request, json, base64, os, sys, glob
 
@@ -29,7 +26,7 @@ def read_telegram_config():
     if not token:
         token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
     if not chat_id:
-        chat_id = '253742472'
+        chat_id = None
     return token, chat_id
 
 def send_document(token, chat_id, file_path, filename=None):
@@ -64,7 +61,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser(description='Send files as Telegram documents')
     parser.add_argument('files', nargs='+', help='File paths to send')
-    parser.add_argument('--chat-id', default='253742472', help='Target chat ID')
+    parser.add_argument('--chat-id', default=None, help='Target chat ID (default: read from ~/.hermes/.env TELEGRAM_HOME_CHANNEL)')
     parser.add_argument('--filename', '-n', help='Custom filename (single file only)')
     parser.add_argument('--content-type', '-c', default='text/markdown', help='Content-Type (default: text/markdown)')
     args = parser.parse_args()
