@@ -14,7 +14,7 @@ When the user asks to send, deliver, or present Markdown (.md) files to a Telegr
 ## Prerequisites
 
 - Telegram Bot Token stored in `~/.hermes/.env` as `TELEGRAM_BOT_TOKEN`
-- Target chat ID stored in `~/.hermes/.env` as `TELEGRAM_HOME_CHANNEL` (default: `253742472`)
+- Target chat ID stored in `~/.hermes/.env` as `TELEGRAM_HOME_CHANNEL`
 - Bot already connected via Hermes gateway
 
 ## Method: curl multipart POST to sendDocument
@@ -46,7 +46,7 @@ with open(env_path) as f:
             chat_id = line.strip().split('=', 1)[1].strip()
             break
 if not chat_id:
-    chat_id = '253742472'  # fallback
+    chat_id = None
 
 with open(file_path, 'rb') as f:
     file_data = f.read()
@@ -95,7 +95,7 @@ for file_path, filename in files:
 - **Filename**: Can be in Cyrillic, with spaces, must end in `.md`
 - **File size limit**: Telegram Bot API limit is 2 GB for documents
 - **Token location**: `~/.hermes/.env` → `TELEGRAM_BOT_TOKEN=...`
-- **chat_id**: `~/.hermes/.env` → `TELEGRAM_HOME_CHANNEL=...` (fallback: `253742472`)
+- **chat_id**: `~/.hermes/.env` → `TELEGRAM_HOME_CHANNEL=...`
 
 ## Why not `send_message` with `MEDIA:`?
 
